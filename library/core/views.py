@@ -1,10 +1,18 @@
 from rest_framework import viewsets, generics
+from rest_framework.pagination import PageNumberPagination
 from core.models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
 
 
+class BookPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 1000
+
+
 class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = AuthorSerializer
+    pagination_class = BookPagination
 
     def get_queryset(self):
         queryset = Author.objects.all()
@@ -16,8 +24,7 @@ class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
 
 class BookViewSet(viewsets.ModelViewSet):
     serializer_class = BookSerializer
-
-    serializer_class = BookSerializer
+    pagination_class = BookPagination
 
     def get_queryset(self):
         queryset = Book.objects.all()
@@ -31,7 +38,7 @@ class BookViewSet(viewsets.ModelViewSet):
         if publication_year:
             queryset = queryset.filter(publication_year=publication_year)
         if edition:
-            queryset = queryset.filter(edition=edition)
+            queryset = queryset.filter(edition=int(edition))
         if author:
             queryset = queryset.filter(authors=author)
 
