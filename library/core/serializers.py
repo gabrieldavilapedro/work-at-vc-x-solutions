@@ -1,14 +1,14 @@
 from rest_framework import serializers
-from .models import book, author
+from core.models import Book, Author
 
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = author
+        model = Author
         fields = ["id", "name"]
 
 
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
-        model = book
+        model = Book
         fields = ["id", "name", "edition", "publication_year", "authors"]
