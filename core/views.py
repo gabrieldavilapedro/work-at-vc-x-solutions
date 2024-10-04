@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from rest_framework.pagination import PageNumberPagination
 from core.models import Book, Author
 from .serializers import BookSerializer, AuthorSerializer
