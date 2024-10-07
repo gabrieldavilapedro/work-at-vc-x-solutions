@@ -15,7 +15,7 @@ class AuthorViewSet(viewsets.ReadOnlyModelViewSet):
     pagination_class = BookPagination
 
     def get_queryset(self):
-        queryset = Author.objects.all()
+        queryset = Author.objects.all().order_by("id")
         name = self.request.query_params.get("name")
         if name:
             queryset = queryset.filter(name__icontains=name)
@@ -27,7 +27,7 @@ class BookViewSet(viewsets.ModelViewSet):
     pagination_class = BookPagination
 
     def get_queryset(self):
-        queryset = Book.objects.all()
+        queryset = Book.objects.all().order_by("id")
         name = self.request.query_params.get("name")
         publication_year = self.request.query_params.get("publication_year")
         edition = self.request.query_params.get("edition")

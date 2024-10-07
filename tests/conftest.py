@@ -1,7 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
 from core.models import Author, Book
-from django.contrib.auth.models import User
 
 
 @pytest.fixture
@@ -17,7 +16,6 @@ def enable_db_access_for_all_tests(db):
 @pytest.fixture(scope="session", autouse=True)
 def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
-        User.objects.create_user(username="admin", password="admin")
 
         author_1 = Author.objects.create(name="Gabriel D'avila")
         author_2 = Author.objects.create(name="Gabriel pedro")
