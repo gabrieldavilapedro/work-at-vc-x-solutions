@@ -4,7 +4,7 @@
 
 Este é um projeto de uma API REST para gerenciar uma biblioteca de livros.
 
-Este projeto foi desenvolvido no ubuntu 22.04 em um notebook Acer Nitro AN515-51, usando o editor de texto Visual studio code. A versão do PostgreSQL utilizada é a 14.13.
+Este projeto foi desenvolvido no ubuntu 22.04 em um notebook Acer Nitro AN515-51, usando o editor de texto Visual studio code. Utilizando o Python na versão **3.11.10** e o PostgreSQL na versão **14.13**.
 
 ## Funcionalidades
 
@@ -43,7 +43,9 @@ sudo apt install postgresql postgresql-contrib -y
 
 ```bash
 sudo systemctl start postgresql
+```
 
+```bash
 sudo systemctl enable postgresql
 ```
 
@@ -90,6 +92,8 @@ GRANT ALL PRIVILEGES ON DATABASE library TO nome_do_usuario;
 ```sql
 ALTER USER nome_do_usuario CREATEDB;
 ```
+
+9. Para sair do prompt do PostgreSQL (postgres=#), você pode usar o comando `\q` e em seguida `exit`
 
 ## Rodando Localmente
 
