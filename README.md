@@ -1,4 +1,5 @@
 # Projeto de API REST para Biblioteca
+
 ## Descrição
 
 Este é um projeto de uma API REST para gerenciar uma biblioteca de livros.
@@ -20,43 +21,7 @@ Este projeto foi desenvolvido no ubuntu 22.04 em um notebook Acer Nitro AN515-51
         - Ano de publicação;
         - Autor.
 
-## Rodando Localmente
-
-1. Clone o repositório: Execute o seguinte comando no terminal:
-
-```bash
-git clone git@github.com:gabrieldavilapedro/work-at-vc-x-solutions
-```
-
-2. Entre na pasta do projeto:
-
-```bash
-cd work-at-vc-x-solutions
-```
-
-3. Após clonar o repositório, crie as variáveis de ambiente:
-
-```bash
-cp .env.example .env
-```
-
-Esse comando cria um arquivo ignorado pelo git, nele você pode alterar as variáveis de ambiente para o desenvolvimento local.
-
-4. Crie e ative o ambiente virtual:
-
-```bash
-python3 -m venv .venv
-
-source .venv/bin/activate
-```
-
-5. Agora instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Configurando o Banco de Dados PostgreSQL
+## Configurando o Banco de Dados PostgreSQL
 
 **Segue as instruções de instalação do postgres no sistema operacional ubuntu, isso pode ser diferente dependendo do sistema operacional.**
 
@@ -120,15 +85,57 @@ CREATE USER nome_do_usuario WITH PASSWORD 'senha_do_usuario';
 GRANT ALL PRIVILEGES ON DATABASE library TO nome_do_usuario;
 ```
 
-### Rodando o Servidor
+8. Conceda a permissão de criação de banco de dados ao usuário (substitua nome_do_usuario pelo nome do usuário do banco de dados):
 
-1. **Rode as migrações**: Após configurar o banco de dados, execute o comando abaixo para aplicar as migrações:
+```sql
+ALTER USER nome_do_usuario CREATEDB;
+```
+
+## Rodando Localmente
+
+1. Clone o repositório: Execute o seguinte comando no terminal:
+
+```bash
+git clone git@github.com:gabrieldavilapedro/work-at-vc-x-solutions
+```
+
+2. Entre na pasta do projeto:
+
+```bash
+cd work-at-vc-x-solutions
+```
+
+3. Após clonar o repositório, crie as variáveis de ambiente:
+
+```bash
+cp env.example .env
+```
+
+Esse comando cria um arquivo ignorado pelo git, nele você pode alterar as variáveis de ambiente para o desenvolvimento local.
+
+4. Crie e ative o ambiente virtual:
+
+```bash
+python3 -m venv .venv
+```
+
+```bash
+source .venv/bin/activate
+```
+
+5. Agora instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+6. **Rode as migrações**: Após configurar o banco de dados, abra um novo terminal com o .venv ativo e execute o comando abaixo para aplicar as migrações:
 
 ```bash
 python manage.py migrate
 ```
 
-2. **Popular a tabela de autores**: É possível popular a tabela de autores importando um arquivo CSV com nomes, rode este comando:
+7. **Popular a tabela de autores**: É possível popular a tabela de autores importando um arquivo CSV com nomes, rode este comando:
 
 ```bash
 python manage.py import_authors authors_exemple.csv 
@@ -136,21 +143,15 @@ python manage.py import_authors authors_exemple.csv
 
 "authors_exemple.csv" é o caminho do arquivo CSV. Você pode importar qualquer arquivo que possua a coluna `name` e nomes de autores. Esse script ira inserir os autores no banco em lotes, você pode opcionalmente controlar o tamanho desses lotes passando o argumento `--batch_size=1000`
 
-3. **Iniciar o servidor**: Execute o comando abaixo para iniciar o servidor:
+8. **Iniciar o servidor**: Execute o comando abaixo para iniciar o servidor:
 
 ```bash
 python manage.py runserver
 ```
-
-## Rodando os Testes
-
-Também é possível rodar os testes com o seguinte comando:
-
-```bash
-python3 -m pytest
-```
+Após realizar estes passos, já será possível fazer as requisições para a API.
 
 ## Documentação das Rotas
+
 
 Faça o download deste arquivo, onde estão documentadas as rotas:
 
@@ -176,3 +177,11 @@ Aqui está um exemplo de como fazer uma requisição usando o Postman:
 4. Veja a resposta no painel de resposta do Postman.
 
 Com essas instruções, você deve ser capaz de baixar e importar o arquivo de configuração do Postman e começar a fazer requisições para a API documentada.
+
+## Rodando os Testes
+
+Também é possível rodar os testes com o seguinte comando:
+
+```bash
+python3 -m pytest
+```
