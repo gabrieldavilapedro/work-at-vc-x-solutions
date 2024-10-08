@@ -1,146 +1,191 @@
-# VC-X Solutions - Desafio de Código
+# Projeto de API REST para Biblioteca
 
-[**VC-X Solutions**](https://vcx.solutions/) é uma startup do Grupo Senior Sistemas, sediada em
-Florianópolis, SC. Nascemos com o propósito de impactar positivamente o mercado e entregar
-facilidades em meio a processos complexos. Hoje, oferecemos uma plataforma completa — VC-X Sonar —
-que já ajudou centenas de empresas a descomplicar a telecom e TI. E quer saber? Estamos só começando
-e vamos revolucionar o mercado, oferecendo soluções cada vez mais automatizadas, conectadas e
-eficientes.
+## Descrição
 
-Nossa equipe é formada por desenvolvedores apaixonados e comprometidos com a excelência. Priorizamos processos ágeis e as melhores práticas do mercado, criando um ambiente de trabalho ideal para profissionais que se dedicam ao que fazem.
+Este é um projeto de uma API REST para gerenciar uma biblioteca de livros.
 
-## 1. Objetivo
+Este projeto foi desenvolvido no ubuntu 22.04 em um notebook Acer Nitro AN515-51, usando o editor de texto Visual studio code. Utilizando o Python na versão **3.11.10** e o PostgreSQL na versão **14.13**.
 
-Este repositório contém um desafio usado para avaliar as habilidades dos candidatos no
-desenvolvimento do backend.
+## Funcionalidades
 
-É importante notar que resolver o problema de forma satisfatória é apenas uma parte da avaliação.
-Também consideramos outras disciplinas de programação, como documentação, testes, histórico de
-commits e melhores práticas de codificação.
+- **Importar novos autores** por meio de um arquivo `.csv`.
+- **Listar todos os autores (Com paginação)**.
+    - **Filtrar autores** pelo nome.
+- **Criar um livro**.
+- **Atualizar um livro**.
+- **Excluir um livro**.
+- **Listar todos os livros (Com paginação)**.
+    - **Filtrar livros** por:
+        - Nome;
+        - Edição;
+        - Ano de publicação;
+        - Autor.
 
-## 2. Como Participar
+## Configurando o Banco de Dados PostgreSQL
 
-2.1. Leia atentamente as especificações para entender completamente o problema e todos os requisitos antes de começar;
+**Segue as instruções de instalação do postgres no sistema operacional ubuntu, isso pode ser diferente dependendo do sistema operacional.**
 
-2.2. **Faça um fork deste repositório** no Github. Se você não puder criar um fork público, crie um repositório privado e conceda acesso de leitura aos seguintes usuários:
+1. Atualizar o Sistema
 
-- `gustavo.rosa@vcx.solutions`;
+Antes de instalar o PostgreSQL, certifique-se de que seu sistema está atualizado. Abra o terminal e execute os seguintes comandos:
 
-- `hugo.santos@vcx.solutions`.
-
-## 3. Especificação
-
-Você deve implementar uma aplicação para gerenciar dados de livros e autores. Esta aplicação deve
-fornecer uma API REST HTTP que atenda aos seguintes requisitos:
-
-### 3.1. Receber um arquivo CSV com autores e importar os dados para o banco de dados
-
-Dado um arquivo CSV contendo vários autores (potencialmente mais de um milhão), crie um comando para
-importar esses dados para o banco de dados. O arquivo CSV terá o seguinte formato:
-
-```csv
-name
-Luciano Ramalho
-Osvaldo Santana Neto
-David Beazley
-Chetan Giridhar
-Brian K. Jones
-J.K. Rowling
+```bash
+sudo apt update && sudo apt upgrade -y
 ```
 
-Cada registro de autor no banco de dados deve incluir os seguintes campos:
+2. Instalando o PostgreSQL
 
-- id (gerado automaticamente);
-- name.
-
-Você precisará armazenar os dados dos autores para complementar os dados dos livros que serão
-armazenados posteriormente (veja o item #3).
-
-### 3.2. Expor dados dos autores através de um endpoint
-
-Crie um endpoint que retorne uma lista de autores. Opcionalmente, permita a busca de autores pelo
-nome.
-
-### 3.3. Operações de CRUD (Create, Read, Update, Delete) para Livros
-
-Implemente as seguintes ações na sua API:
-
-- Criar um livro;
-
-- Ler detalhes de um livro;
-
-- Atualizar detalhes de um livro;
-
-- Excluir um livro.
-
-Cada registro de livro deve conter os seguintes campos:
-
-- id (gerado automaticamente);
-
-- name;
-
-- edition;
-
-- publication_year;
-
-- authors (um livro pode ter vários autores).
-
-Para recuperar os dados de um livro, deve ser possível filtrar pelos seguintes campos
-(individualmente ou em combinação):
-
-- name;
-
-- publication_year;
-
-- edition;
-
-- author.
-
-> Esses filtros são opcionais, deve ser possível navegar por todos os registros de livros sem nenhum filtro.
-
-Para criar um livro, use o seguinte payload JSON:
-
-```json
-{
-  "name": "Nome do Livro",
-  "edition": 1,
-  "publication_year": 2021,
-  "authors": [1, 2, 3]
-}
+```bash
+sudo apt install postgresql postgresql-contrib -y
 ```
 
-## 4. Requisitos do Projeto
+3. Iniciando e Habilitando o PostgreSQL
 
-- A aplicação deve ser escrita em Python usando o framework Django;
+```bash
+sudo systemctl start postgresql
+```
 
-- Use Python 3.11 ou superior;
+```bash
+sudo systemctl enable postgresql
+```
 
-- Siga as diretrizes de estilo de código PEP-8;
+**Após a instalação siga os seguintes passos:**
 
-- Certifique-se de que variáveis, código e strings estejam todos em inglês;
+1. **Acessando o PostgreSQL**
 
-- Inclua a documentação do projeto com:
+Por padrão, o PostgreSQL cria um usuário chamado `postgres`. Para acessar o PostgreSQL, você precisa mudar para este usuário:
 
-    - Uma breve descrição;
+```bash
+sudo -i -u postgres
+```
 
-    - Instruções de instalação (setup) e testes;
+Em seguida, abra o prompt do PostgreSQL:
 
-    - Se você fornecer uma configuração Docker, certifique-se de que também funcione sem Docker;
+```bash
+psql
+```
 
-    - Uma breve descrição do ambiente usado para rodar o projeto (computador, SO, editor de texto/IDE, bibliotecas, etc.).
+Você verá o prompt do PostgreSQL (`postgres=#`), onde poderá executar comandos SQL.
+
+2. Criando um Banco de Dados
+
+**Atente-se para usar o mesmo usuário, senha e nome do banco de dados nos comandos a seguir que são configurados no `.env`.**
+
+```sql
+CREATE DATABASE library;
+```
+
+6. Crie um novo usuário:
+
+```sql
+CREATE USER nome_do_usuario WITH PASSWORD 'senha_do_usuario';
+```
+
+7. Conceda permissões ao usuário para acessar o banco de dados:
+
+```sql
+GRANT ALL PRIVILEGES ON DATABASE library TO nome_do_usuario;
+```
+
+8. Conceda a permissão de criação de banco de dados ao usuário (substitua nome_do_usuario pelo nome do usuário do banco de dados):
+
+```sql
+ALTER USER nome_do_usuario CREATEDB;
+```
+
+9. Para sair do prompt do PostgreSQL (postgres=#), você pode usar o comando `\q` e em seguida `exit`
+
+## Rodando Localmente
+
+1. Clone o repositório: Execute o seguinte comando no terminal:
+
+```bash
+git clone git@github.com:gabrieldavilapedro/work-at-vc-x-solutions
+```
+
+2. Entre na pasta do projeto:
+
+```bash
+cd work-at-vc-x-solutions
+```
+
+3. Após clonar o repositório, crie as variáveis de ambiente:
+
+```bash
+cp env.example .env
+```
+
+Esse comando cria um arquivo ignorado pelo git, nele você pode alterar as variáveis de ambiente para o desenvolvimento local.
+
+4. Crie e ative o ambiente virtual:
+
+```bash
+python3 -m venv .venv
+```
+
+```bash
+source .venv/bin/activate
+```
+
+5. Agora instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+6. **Rode as migrações**: Após configurar o banco de dados, abra um novo terminal com o .venv ativo e execute o comando abaixo para aplicar as migrações:
+
+```bash
+python manage.py migrate
+```
+
+7. **Popular a tabela de autores**: É possível popular a tabela de autores importando um arquivo CSV com nomes, rode este comando:
+
+```bash
+python manage.py import_authors authors_exemple.csv 
+```
+
+"authors_exemple.csv" é o caminho do arquivo CSV. Você pode importar qualquer arquivo que possua a coluna `name` e nomes de autores. Esse script ira inserir os autores no banco em lotes, você pode opcionalmente controlar o tamanho desses lotes passando o argumento `--batch_size=1000`
+
+8. **Iniciar o servidor**: Execute o comando abaixo para iniciar o servidor:
+
+```bash
+python manage.py runserver
+```
+Após realizar estes passos, já será possível fazer as requisições para a API.
+
+## Documentação das Rotas
 
 
-## 5. Recomendações
+Faça o download deste arquivo, onde estão documentadas as rotas:
 
-- Escreva testes;
+[Library.postman](./Library.postman_collection.json)
 
-- Siga as melhores práticas de programação;
+### Importando no Postman
 
-- Use as melhores práticas de git com mensagens de commit claras;
+1. Abra o Postman.
+2. Clique no botão `Import` no canto superior esquerdo.
+3. Selecione a aba `File`.
+4. Selecione o arquivo `Project-blogs-api.postman` que você baixou.
+5. Clique em `Import`.
 
-- Seja cuidadoso ao modelar o banco de dados;
+Após importar, você verá todas as rotas documentadas no Postman e poderá fazer as requisições diretamente.
 
-- Valorizamos a simplicidade, então configure seu projeto de forma a facilitar nossa avaliação.
+### Exemplo de Uso
 
+Aqui está um exemplo de como fazer uma requisição usando o Postman:
 
-Se algo não estiver claro, entre em contato conosco. Boa sorte!
+1. Selecione a rota que você deseja testar;
+2. Configure os parâmetros necessários. a documentação possui exemplos;
+3. Clique em `Send` para enviar a requisição;
+4. Veja a resposta no painel de resposta do Postman.
+
+Com essas instruções, você deve ser capaz de baixar e importar o arquivo de configuração do Postman e começar a fazer requisições para a API documentada.
+
+## Rodando os Testes
+
+Também é possível rodar os testes com o seguinte comando:
+
+```bash
+python3 -m pytest
+```

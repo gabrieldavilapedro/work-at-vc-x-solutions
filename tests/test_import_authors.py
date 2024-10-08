@@ -1,9 +1,7 @@
-import pytest
 from django.core.management import call_command
 from core.models import Author
 
 
-@pytest.mark.django_db
 def test_import_authors():
     csv_content = """name
 Author 1
