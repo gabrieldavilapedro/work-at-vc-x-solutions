@@ -12,7 +12,7 @@ class Command(BaseCommand):
         parser.add_argument(
             "--batch_size",
             type=int,
-            default=200000000000000,
+            default=1000,
             help="The number of records to insert in each batch",
         )
 
